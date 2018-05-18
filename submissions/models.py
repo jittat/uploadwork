@@ -22,5 +22,16 @@ class Submission(models.Model):
             status = 'inqueue'
         else:
             status = 'done'
-        return 'Submission by {0} at {1} ({2})'.format(self.user, self.created_at, status)
-    
+        return 'Submission {3} by {0} at {1} ({2})'.format(self.user, self.created_at, status, self.id)
+
+
+    @staticmethod
+    def latest_from_each_user():
+        subs = {}
+        for sub in Submission.objects.all():
+            if sub.user.username not in subs:
+                subs[sub.user.username] = sub
+        return subs
+
+
+            
