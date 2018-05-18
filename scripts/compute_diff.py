@@ -35,7 +35,7 @@ def output_path(job_id):
 
 def create_out_dir(job_id):
     try:
-        os.mkdir(output_path)
+        os.mkdir(output_path(job_id))
     except:
         pass
 
@@ -97,11 +97,16 @@ def compare(usernames, results):
             ids[u] += 1
 
         #print(ids)
-        if (not same) or (len(score_set) > 1):
+        if not same:
+            if (len(score_set) == 1) and ('-1.000000' in score_set):
+                continue
+            compare_results.append((min_nat_id, this_result))
+        elif len(score_set) > 1:
             compare_results.append((min_nat_id, this_result))
 
     return compare_results
-        
+
+
 def work(job_id):
     lines = {}
     usernames = []
@@ -128,6 +133,7 @@ def work(job_id):
         res = compare(usernames, user_results)
         if len(res) != 0:
             output_compare_result(job_id, m, usernames, res)
+
 
 def main():
     submissions = Submission.objects.filter(is_inqueue=True).all()
