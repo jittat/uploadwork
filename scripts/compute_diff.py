@@ -102,8 +102,9 @@ def compare(usernames, results):
                 continue
             compare_results.append((min_nat_id, this_result))
         elif len(score_set) > 1:
-            mn = min(list(score_set))
-            mx = min(list(score_set))
+            slist = [float(x) for x in list(score_set)]
+            mn = min(slist)
+            mx = max(slist)
             if mx - mn > 0.00001:
                 compare_results.append((min_nat_id, this_result))
 
